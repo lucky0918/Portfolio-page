@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gorang Verma | BCA Advanced & Esports Developer Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            black: '#07080d',
+                            dark: '#0f111a',
+                            card: '#161926',
+                            border: '#272d42',
+                            cyan: '#00f3ff',
+                            purple: '#b026ff',
+                            pink: '#ff007f',
+                            accent: '#39ff14'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 20px rgba(0, 243, 255, 0.4)',
+                        'neon-purple': '0 0 20px rgba(176, 38, 255, 0.4)',
+                        'neon-pink': '0 0 20px rgba(255, 0, 127, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS Styles -->
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07080d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #272d42;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+
+        /* Neon Glow Effects */
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+        .text-glow-purple {
+            text-shadow: 0 0 10px rgba(176, 38, 255, 0.7), 0 0 20px rgba(176, 38, 255, 0.4);
+        }
+        .border-glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+        
+        /* Cyber Grid Background Overlay */
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Glassmorphic Cards */
+        .cyber-card {
+            background: rgba(22, 25, 38, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(39, 45, 66, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cyber-card:hover {
+            border-color: rgba(0, 243, 255, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(0, 243, 255, 0.2);
+        }
+
+        /* Animated Clip Paths for Buttons */
+        .cyber-button {
+            position: relative;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            transition: all 0.3s ease;
+        }
+
+        /* Canvas Overlay */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Keyframe Pulse Animation */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-cyber-black text-gray-200 font-sans antialiased relative selection:bg-cyber-cyan selection:text-black min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Interactive Background Canvas -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-cyber-black/80 backdrop-blur-md border-b border-cyber-border/60 transition-all duration-300" id="mainHeader">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo / Name Badge -->
+            <a href="#home" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-cyan via-cyber-purple to-cyber-pink p-[2px] shadow-neon-cyan group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-cyber-black rounded-[6px] flex items-center justify-center font-display font-black text-cyber-cyan text-xl">
+                        GV
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-lg tracking-wider text-white group-hover:text-cyber-cyan transition-colors">
+                        GORANG<span class="text-cyber-cyan">.VERMA</span>
+                    </span>
+                    <span class="font-tech text-xs tracking-widest text-cyber-cyan/80 uppercase">BCA Advanced Student</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 font-tech font-semibold text-base tracking-wider uppercase">
+                <a href="#home" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card transition-all">Home</a>
+                <a href="#about" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card transition-all">About</a>
+                <a href="#skills" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card transition-all">Skills</a>
+                <a href="#projects" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card transition-all">Projects</a>
+                <a href="#education" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card transition-all">Education</a>
+                <a href="#contact" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card transition-all">Contact</a>
+            </nav>
+
+            <!-- Action Buttons & Audio Toggle -->
+            <div class="hidden md:flex items-center gap-3">
+                <button id="soundToggle" title="Toggle Visual Audio SFX" class="w-10 h-10 rounded-lg bg-cyber-card border border-cyber-border text-cyber-cyan hover:border-cyber-cyan flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                </button>
+                <a href="#contact" class="cyber-button px-5 py-2.5 bg-gradient-to-r from-cyber-cyan to-cyber-purple text-black font-display font-bold text-sm tracking-wider uppercase hover:opacity-90 shadow-neon-cyan flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad"></i> Connect
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-lg bg-cyber-card border border-cyber-border text-cyber-cyan flex items-center justify-center text-xl focus:outline-none">
+                <i class="fa-solid fa-bars" id="menuIcon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-cyber-dark/95 border-b border-cyber-border px-4 pt-2 pb-6 space-y-2 font-tech font-bold text-lg uppercase tracking-widest backdrop-blur-xl">
+            <a href="#home" class="mobile-nav-link block px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card">Home</a>
+            <a href="#about" class="mobile-nav-link block px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card">About</a>
+            <a href="#skills" class="mobile-nav-link block px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card">Skills</a>
+            <a href="#projects" class="mobile-nav-link block px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card">Projects</a>
+            <a href="#education" class="mobile-nav-link block px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card">Education</a>
+            <a href="#contact" class="mobile-nav-link block px-4 py-2 rounded-lg text-gray-300 hover:text-cyber-cyan hover:bg-cyber-card">Contact</a>
+            <div class="pt-2 flex items-center justify-between">
+                <a href="#contact" class="w-full text-center cyber-button py-3 bg-gradient-to-r from-cyber-cyan to-cyber-purple text-black font-display font-bold text-sm uppercase">
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow z-10 pt-20">
+
+        <!-- HOME / HERO SECTION -->
+        <section id="home" class="relative min-h-[calc(100vh-80px)] flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 cyber-grid">
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Column: Bio Details -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    
+                    <!-- Gamer Level Tag -->
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan text-xs font-tech font-semibold tracking-widest uppercase shadow-neon-cyan">
+                        <span class="w-2 h-2 rounded-full bg-cyber-accent animate-ping"></span>
+                        BCA Advanced Student & Esports Enthusiast
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-tight tracking-tight">
+                        Hello, I'm <br class="hidden sm:inline" />
+                        <span class="bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink bg-clip-text text-transparent text-glow-cyan">
+                            Gorang Verma
+                        </span>
+                    </h1>
+
+                    <!-- Animated Typing Subtitle -->
+                    <div class="font-tech text-xl sm:text-2xl text-gray-300 flex items-center justify-center lg:justify-start gap-2 h-8">
+                        <span>Passionate about</span>
+                        <span id="typingText" class="text-cyber-cyan font-bold underline decoration-cyber-purple decoration-2"></span>
+                        <span class="w-0.5 h-6 bg-cyber-cyan animate-pulse"></span>
+                    </div>
+
+                    <!-- Intro Text -->
+                    <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-sans leading-relaxed">
+                        Currently pursuing <strong class="text-white">BCA Advanced</strong> with a high-octane focus on modern web tech, competitive gaming strategies, and sleek interactive front-end designs. Blending tech precision with gaming innovation.
+                    </p>
+
+                    <!-- CTA Action Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#projects" class="cyber-button px-7 py-3.5 bg-cyber-cyan text-black font-display font-bold text-sm tracking-wider uppercase hover:bg-white hover:shadow-neon-cyan transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad"></i> View Esports Webpage
+                        </a>
+                        <a href="#contact" class="cyber-button px-7 py-3.5 bg-cyber-card border border-cyber-purple text-white hover:border-cyber-cyan hover:text-cyber-cyan font-display font-bold text-sm tracking-wider uppercase transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Contact Me
+                        </a>
+                    </div>
+
+                    <!-- Key Stats Quick Strip -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-cyber-border/60 max-w-lg mx-auto lg:mx-0">
+                        <div class="bg-cyber-card/50 p-3 rounded-lg border border-cyber-border text-center">
+                            <div class="font-display font-black text-2xl text-cyber-cyan">BCA</div>
+                            <div class="font-tech text-xs text-gray-400 uppercase tracking-wider">Advanced Core</div>
+                        </div>
+                        <div class="bg-cyber-card/50 p-3 rounded-lg border border-cyber-border text-center">
+                            <div class="font-display font-black text-2xl text-cyber-purple">12th</div>
+                            <div class="font-tech text-xs text-gray-400 uppercase tracking-wider">Passout Merit</div>
+                        </div>
+                        <div class="bg-cyber-card/50 p-3 rounded-lg border border-cyber-border text-center">
+                            <div class="font-display font-black text-2xl text-cyber-pink">PRO</div>
+                            <div class="font-tech text-xs text-gray-400 uppercase tracking-wider">Gamer & Dev</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Hero Right Column: Esports Visual Card & Interactive HUD -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        
+                        <!-- Glowing Backdrop Effects -->
+                        <div class="absolute -top-6 -left-6 w-48 h-48 bg-cyber-cyan/20 rounded-full blur-3xl"></div>
+                        <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-cyber-purple/20 rounded-full blur-3xl"></div>
+
+                        <!-- Gamer Profile Graphic Box -->
+                        <div class="cyber-card rounded-2xl p-6 relative z-10 border-2 border-cyber-border hover:border-cyber-cyan transition-all animate-pulse-glow">
+                            
+                            <!-- Card Header Badge -->
+                            <div class="flex items-center justify-between pb-4 border-b border-cyber-border mb-6">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-cyber-accent"></span>
+                                    <span class="font-tech text-sm tracking-widest text-gray-300 font-bold uppercase">PLAYER STATUS: ONLINE</span>
+                                </div>
+                                <span class="font-display font-bold text-xs text-cyber-cyan bg-cyber-cyan/10 px-2.5 py-1 rounded border border-cyber-cyan/30">LEVEL 100</span>
+                            </div>
+
+                            <!-- Gamer Avatar Container -->
+                            <div class="relative w-48 h-48 mx-auto mb-6 rounded-2xl overflow-hidden border-2 border-cyber-purple/60 group shadow-neon-purple flex items-center justify-center bg-gradient-to-b from-cyber-card to-cyber-black">
+                                <div class="text-center p-4">
+                                    <i class="fa-solid fa-headset text-6xl text-cyber-cyan mb-2 group-hover:scale-110 transition-transform"></i>
+                                    <div class="font-display font-bold text-sm text-white">GV ALIAS</div>
+                                    <div class="font-tech text-xs text-cyber-purple">ACADEMY ATHLETE</div>
+                                </div>
+                                <!-- Overlay Neon Effect -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-cyber-black via-transparent to-transparent opacity-80"></div>
+                            </div>
+
+                            <!-- Player Stats Grid -->
+                            <div class="space-y-3 font-tech text-sm">
+                                <div>
+                                    <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                        <span>BCA ADVANCED PROGRESS</span>
+                                        <span class="text-cyber-cyan font-bold">PURSUING</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-cyber-black rounded-full overflow-hidden border border-cyber-border">
+                                        <div class="h-full bg-gradient-to-r from-cyber-cyan to-cyber-purple w-3/4"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                        <span>GAMING SKILL LEVEL</span>
+                                        <span class="text-cyber-purple font-bold">COMPETITIVE</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-cyber-black rounded-full overflow-hidden border border-cyber-border">
+                                        <div class="h-full bg-gradient-to-r from-cyber-purple to-cyber-pink w-11/12"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Footer Quick Links -->
+                            <div class="mt-6 pt-4 border-t border-cyber-border flex justify-around text-gray-400 text-lg">
+                                <span title="Email" class="hover:text-cyber-cyan cursor-pointer transition-colors" onclick="copyContactInfo('luckyverma76@gmail.com', 'Email')"><i class="fa-solid fa-envelope"></i></span>
+                                <span title="Phone" class="hover:text-cyber-cyan cursor-pointer transition-colors" onclick="copyContactInfo('+919131324500', 'Phone Number')"><i class="fa-solid fa-phone"></i></span>
+                                <span title="Project" class="hover:text-cyber-cyan cursor-pointer transition-colors"><a href="#projects"><i class="fa-solid fa-trophy"></i></a></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ABOUT ME SECTION -->
+        <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 bg-cyber-dark/40 relative border-t border-cyber-border/40">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="font-tech text-cyber-cyan text-sm tracking-widest font-bold uppercase mb-2">// IDENTITY PROFILE</h2>
+                    <h3 class="font-display text-3xl sm:text-4xl font-black text-white">ABOUT <span class="text-cyber-purple">GORANG VERMA</span></h3>
+                    <div class="w-20 h-1 bg-gradient-to-r from-cyber-cyan to-cyber-purple mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Left Bio Card -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="cyber-card p-6 sm:p-8 rounded-2xl border border-cyber-border">
+                            <h4 class="font-display font-bold text-2xl text-white mb-4 flex items-center gap-3">
+                                <i class="fa-solid fa-microchip text-cyber-cyan"></i> Student & Tech Architect
+                            </h4>
+                            <p class="text-gray-300 leading-relaxed font-sans mb-4">
+                                Welcome! I am <strong class="text-white">Gorang Verma</strong>, a dedicated student currently enrolled in the <strong class="text-cyber-cyan">BCA Advanced (Bachelor of Computer Applications)</strong> program. Having completed my 12th standard education, I transitioned into higher computing studies to blend logical problem-solving with my passion for gaming.
+                            </p>
+                            <p class="text-gray-300 leading-relaxed font-sans mb-6">
+                                Beyond textbooks, my world revolves around high-tier esports, gaming mechanics, and front-end web development. I believe that modern web applications should deliver the same responsive, immersive, and visually stunning experience found in top-tier gaming titles.
+                            </p>
+
+                            <!-- Mini Highlights List -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 font-tech">
+                                <div class="flex items-center gap-3 p-3 bg-cyber-black/60 rounded-lg border border-cyber-border">
+                                    <i class="fa-solid fa-graduation-cap text-cyber-cyan text-xl"></i>
+                                    <div>
+                                        <div class="text-xs text-gray-400">QUALIFICATION</div>
+                                        <div class="text-sm font-bold text-white">12th Passout & BCA Adv.</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 bg-cyber-black/60 rounded-lg border border-cyber-border">
+                                    <i class="fa-solid fa-crosshair text-cyber-purple text-xl"></i>
+                                    <div>
+                                        <div class="text-xs text-gray-400">PRIMARY FOCUS</div>
+                                        <div class="text-sm font-bold text-white">Gaming & Web UI/UX</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Key Traits Cards -->
+                    <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                        
+                        <!-- Card 1 -->
+                        <div class="cyber-card p-5 rounded-xl border border-cyber-border hover:border-cyber-cyan transition-all flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan text-xl shrink-0">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-display font-bold text-white text-base">Web Development</h5>
+                                <p class="text-xs text-gray-400 font-sans mt-1">Building modern, responsive user interfaces and esports platform layouts.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="cyber-card p-5 rounded-xl border border-cyber-border hover:border-cyber-purple transition-all flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-cyber-purple/10 border border-cyber-purple/40 flex items-center justify-center text-cyber-purple text-xl shrink-0">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-display font-bold text-white text-base">Esports Gaming</h5>
+                                <p class="text-xs text-gray-400 font-sans mt-1">Analytical gameplay, competitive team tactics, FPS & MOBA title expertise.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="cyber-card p-5 rounded-xl border border-cyber-border hover:border-cyber-pink transition-all flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-cyber-pink/10 border border-cyber-pink/40 flex items-center justify-center text-cyber-pink text-xl shrink-0">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-display font-bold text-white text-base">Analytical Mindset</h5>
+                                <p class="text-xs text-gray-400 font-sans mt-1">Combining computer application concepts with strategic esports solutions.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="font-tech text-cyber-cyan text-sm tracking-widest font-bold uppercase mb-2">// POWER UPS & CAPABILITIES</h2>
+                    <h3 class="font-display text-3xl sm:text-4xl font-black text-white">SKILL <span class="text-cyber-cyan">INVENTORY</span></h3>
+                    <div class="w-20 h-1 bg-gradient-to-r from-cyber-purple to-cyber-cyan mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Gaming Competencies Box -->
+                    <div class="cyber-card p-6 sm:p-8 rounded-2xl border border-cyber-border">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-cyber-border">
+                            <i class="fa-solid fa-trophy text-2xl text-cyber-cyan"></i>
+                            <h4 class="font-display font-bold text-xl text-white">Gaming & Esports Skills</h4>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Skill Item 1 -->
+                            <div>
+                                <div class="flex justify-between font-tech text-sm mb-2">
+                                    <span class="text-gray-200 font-bold flex items-center gap-2">
+                                        <i class="fa-solid fa-bullseye text-cyber-cyan text-xs"></i> Competitive Gaming Mechanics
+                                    </span>
+                                    <span class="text-cyber-cyan font-bold">95%</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-cyber-black rounded-full overflow-hidden border border-cyber-border p-0.5">
+                                    <div class="h-full bg-gradient-to-r from-cyber-cyan to-blue-500 rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill Item 2 -->
+                            <div>
+                                <div class="flex justify-between font-tech text-sm mb-2">
+                                    <span class="text-gray-200 font-bold flex items-center gap-2">
+                                        <i class="fa-solid fa-users text-cyber-purple text-xs"></i> Team Strategy & Coordination
+                                    </span>
+                                    <span class="text-cyber-purple font-bold">90%</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-cyber-black rounded-full overflow-hidden border border-cyber-border p-0.5">
+                                    <div class="h-full bg-gradient-to-r from-cyber-purple to-indigo-500 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill Item 3 -->
+                            <div>
+                                <div class="flex justify-between font-tech text-sm mb-2">
+                                    <span class="text-gray-200 font-bold flex items-center gap-2">
+                                        <i class="fa-solid fa-bolt text-cyber-pink text-xs"></i> Reflexes & Tactical Decision Making
+                                    </span>
+                                    <span class="text-cyber-pink font-bold">88%</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-cyber-black rounded-full overflow-hidden border border-cyber-border p-0.5">
+                                    <div class="h-full bg-gradient-to-r from-cyber-pink to-rose-500 rounded-full" style="width: 88%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill Tags -->
+                            <div class="pt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-cyan/30 text-xs font-tech text-cyber-cyan">FPS Tournaments</span>
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-purple/30 text-xs font-tech text-cyber-purple">MOBA Strategy</span>
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-pink/30 text-xs font-tech text-cyber-pink">Game Streaming</span>
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-accent/30 text-xs font-tech text-cyber-accent">Esports Management</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Web Development Skills Box -->
+                    <div class="cyber-card p-6 sm:p-8 rounded-2xl border border-cyber-border">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-cyber-border">
+                            <i class="fa-solid fa-laptop-code text-2xl text-cyber-purple"></i>
+                            <h4 class="font-display font-bold text-xl text-white">BCA & Web Tech Stack</h4>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Skill Item 1 -->
+                            <div>
+                                <div class="flex justify-between font-tech text-sm mb-2">
+                                    <span class="text-gray-200 font-bold flex items-center gap-2">
+                                        <i class="fa-brands fa-html5 text-orange-500 text-xs"></i> HTML5 & CSS3 Styling
+                                    </span>
+                                    <span class="text-orange-400 font-bold">85%</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-cyber-black rounded-full overflow-hidden border border-cyber-border p-0.5">
+                                    <div class="h-full bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill Item 2 -->
+                            <div>
+                                <div class="flex justify-between font-tech text-sm mb-2">
+                                    <span class="text-gray-200 font-bold flex items-center gap-2">
+                                        <i class="fa-brands fa-js text-yellow-400 text-xs"></i> JavaScript Essentials
+                                    </span>
+                                    <span class="text-yellow-400 font-bold">75%</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-cyber-black rounded-full overflow-hidden border border-cyber-border p-0.5">
+                                    <div class="h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill Item 3 -->
+                            <div>
+                                <div class="flex justify-between font-tech text-sm mb-2">
+                                    <span class="text-gray-200 font-bold flex items-center gap-2">
+                                        <i class="fa-solid fa-cubes text-cyber-cyan text-xs"></i> Responsive UI / Tailwind CSS
+                                    </span>
+                                    <span class="text-cyber-cyan font-bold">80%</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-cyber-black rounded-full overflow-hidden border border-cyber-border p-0.5">
+                                    <div class="h-full bg-gradient-to-r from-cyber-cyan to-teal-400 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill Tags -->
+                            <div class="pt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-border text-xs font-tech text-gray-300">C / C++ Basics</span>
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-border text-xs font-tech text-gray-300">Computer Fundamentals</span>
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-border text-xs font-tech text-gray-300">Git Basics</span>
+                                <span class="px-3 py-1 bg-cyber-black rounded border border-cyber-border text-xs font-tech text-gray-300">Responsive Web Design</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 bg-cyber-dark/40 relative border-t border-cyber-border/40">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="font-tech text-cyber-cyan text-sm tracking-widest font-bold uppercase mb-2">// FEATURED WORKS</h2>
+                    <h3 class="font-display text-3xl sm:text-4xl font-black text-white">PROJECT <span class="text-cyber-pink">SHOWCASE</span></h3>
+                    <div class="w-20 h-1 bg-gradient-to-r from-cyber-pink to-cyber-cyan mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Featured Project Card: Esports Webpage -->
+                <div class="cyber-card rounded-2xl overflow-hidden border-2 border-cyber-border hover:border-cyber-cyan transition-all grid grid-cols-1 lg:grid-cols-12 shadow-neon-cyan">
+                    
+                    <!-- Left: Interactive Mockup Preview Box -->
+                    <div class="lg:col-span-7 bg-cyber-black relative overflow-hidden flex flex-col justify-between p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-cyber-border group">
+                        
+                        <!-- Top HUD Bar -->
+                        <div class="flex items-center justify-between pb-4 border-b border-cyber-border/60">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                            </div>
+                            <span class="font-tech text-xs text-cyber-cyan tracking-widest uppercase">FEATURED ESPORTS WEB PORTAL</span>
+                        </div>
+
+                        <!-- Simulated Esports Webpage Preview Graphic -->
+                        <div class="my-8 relative py-8 px-6 bg-gradient-to-br from-cyber-card via-cyber-dark to-cyber-black rounded-xl border border-cyber-cyan/30 group-hover:scale-[1.02] transition-transform duration-500">
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="font-display font-black text-xl text-white tracking-wider flex items-center gap-2">
+                                    <i class="fa-solid fa-gamepad text-cyber-cyan"></i> ESPORTS ARENA
+                                </span>
+                                <span class="text-xs bg-cyber-cyan/20 text-cyber-cyan px-2.5 py-1 rounded font-tech">LIVE REGISTRATION</span>
+                            </div>
+
+                            <p class="text-xs text-gray-300 font-sans mb-4">
+                                Tournament bracket system, live squad leaderboards, dynamic schedule timers, and player profile registration.
+                            </p>
+
+                            <!-- Interactive Live Tournament Preview Cards -->
+                            <div class="grid grid-cols-2 gap-3 font-tech text-xs">
+                                <div class="bg-cyber-black/80 p-3 rounded border border-cyber-border text-center">
+                                    <div class="text-cyber-purple font-bold">VALORANT SHOWDOWN</div>
+                                    <div class="text-gray-400 mt-1">Prize Pool: ₹50,000</div>
+                                </div>
+                                <div class="bg-cyber-black/80 p-3 rounded border border-cyber-border text-center">
+                                    <div class="text-cyber-cyan font-bold">BGMI CHAMPIONSHIP</div>
+                                    <div class="text-gray-400 mt-1">128 Squads Registered</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Card Footer Controls -->
+                        <div class="flex items-center justify-between pt-4 border-t border-cyber-border/60">
+                            <div class="flex items-center gap-2 text-xs font-tech text-gray-400">
+                                <i class="fa-solid fa-check-circle text-cyber-accent"></i> Responsive Design Tested
+                            </div>
+                            <button onclick="openProjectModal()" class="text-xs font-tech font-bold text-cyber-cyan hover:underline flex items-center gap-1">
+                                Launch Interactive Details <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Detailed Project Specs -->
+                    <div class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="inline-block px-3 py-1 bg-cyber-cyan/10 border border-cyber-cyan/40 text-cyber-cyan font-tech text-xs tracking-widest uppercase rounded mb-4">
+                                MAIN BCA PROJECT
+                            </div>
+                            
+                            <h4 class="font-display font-black text-2xl sm:text-3xl text-white mb-3">
+                                Esports Webpage
+                            </h4>
+
+                            <p class="text-gray-300 text-sm font-sans leading-relaxed mb-6">
+                                A high-energy esports platform web page built to host gaming tournaments, feature team rosters, highlight match streaming schedules, and showcase live tournament results with responsive gaming UI elements.
+                            </p>
+
+                            <!-- Project Highlights List -->
+                            <div class="space-y-2 mb-6 text-sm text-gray-300 font-sans">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-chevron-right text-cyber-cyan text-xs"></i> Dynamic Tournament Schedule
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-chevron-right text-cyber-cyan text-xs"></i> Team & Player Registration Form UI
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-chevron-right text-cyber-cyan text-xs"></i> Mobile-first Responsive Esports Layout
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-chevron-right text-cyber-cyan text-xs"></i> Dark Neon Aesthetic Styling
+                                </div>
+                            </div>
+
+                            <!-- Tech Stack Badges -->
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-cyber-card border border-cyber-border text-xs font-tech text-cyber-cyan font-bold">HTML5</span>
+                                <span class="px-3 py-1 bg-cyber-card border border-cyber-border text-xs font-tech text-cyber-purple font-bold">CSS3</span>
+                                <span class="px-3 py-1 bg-cyber-card border border-cyber-border text-xs font-tech text-cyber-pink font-bold">JavaScript</span>
+                                <span class="px-3 py-1 bg-cyber-card border border-cyber-border text-xs font-tech text-cyber-accent font-bold">Tailwind UI</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="pt-4">
+                            <button onclick="openProjectModal()" class="w-full cyber-button py-3 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink text-black font-display font-bold text-sm tracking-wider uppercase hover:opacity-90 shadow-neon-cyan flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-eye"></i> View Live Demo Specs
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EDUCATION SECTION -->
+        <section id="education" class="py-20 px-4 sm:px-6 lg:px-8 relative">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="font-tech text-cyber-cyan text-sm tracking-widest font-bold uppercase mb-2">// ACADEMIC TIMELINE</h2>
+                    <h3 class="font-display text-3xl sm:text-4xl font-black text-white">EDUCATION <span class="text-cyber-cyan">& MERIT</span></h3>
+                    <div class="w-20 h-1 bg-gradient-to-r from-cyber-cyan to-cyber-purple mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Education Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative max-w-4xl mx-auto">
+                    
+                    <!-- Card 1: BCA Advanced (Current) -->
+                    <div class="cyber-card p-6 sm:p-8 rounded-2xl border border-cyber-cyan/50 relative overflow-hidden group shadow-neon-cyan">
+                        <div class="absolute top-0 right-0 px-4 py-1.5 bg-cyber-cyan text-black font-tech font-bold text-xs uppercase rounded-bl-xl">
+                            CURRENT STUDY
+                        </div>
+
+                        <div class="w-14 h-14 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan flex items-center justify-center text-cyber-cyan text-2xl mb-6">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+
+                        <span class="font-tech text-cyber-cyan font-bold text-sm tracking-wider block mb-1">PURSUING DEGREE</span>
+                        <h4 class="font-display font-black text-2xl text-white mb-2">BCA Advanced</h4>
+                        <p class="text-gray-300 font-sans text-sm mb-4">
+                            Bachelor of Computer Applications (Advanced specialization in web development, database management systems, algorithms, and software engineering principles).
+                        </p>
+
+                        <div class="border-t border-cyber-border pt-4 mt-auto flex items-center justify-between text-xs font-tech text-gray-400">
+                            <span><i class="fa-solid fa-book-open text-cyber-cyan mr-1"></i> Computer Science Core</span>
+                            <span class="text-cyber-cyan font-bold">Active Enrolled</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: 12th Passout -->
+                    <div class="cyber-card p-6 sm:p-8 rounded-2xl border border-cyber-border hover:border-cyber-purple transition-all relative overflow-hidden">
+                        <div class="absolute top-0 right-0 px-4 py-1.5 bg-cyber-purple text-white font-tech font-bold text-xs uppercase rounded-bl-xl">
+                            COMPLETED
+                        </div>
+
+                        <div class="w-14 h-14 rounded-xl bg-cyber-purple/10 border border-cyber-purple flex items-center justify-center text-cyber-purple text-2xl mb-6">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+
+                        <span class="font-tech text-cyber-purple font-bold text-sm tracking-wider block mb-1">HIGHER SECONDARY</span>
+                        <h4 class="font-display font-black text-2xl text-white mb-2">12th Standard Passout</h4>
+                        <p class="text-gray-300 font-sans text-sm mb-4">
+                            Successfully passed 12th Board examinations with a strong foundation in analytical reasoning, mathematics, and science stream fundamentals.
+                        </p>
+
+                        <div class="border-t border-cyber-border pt-4 mt-auto flex items-center justify-between text-xs font-tech text-gray-400">
+                            <span><i class="fa-solid fa-check-double text-cyber-purple mr-1"></i> Senior Secondary Passed</span>
+                            <span class="text-cyber-purple font-bold">Verified Merit</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-cyber-dark/40 relative border-t border-cyber-border/40">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="font-tech text-cyber-cyan text-sm tracking-widest font-bold uppercase mb-2">// CONNECT CHANNEL</h2>
+                    <h3 class="font-display text-3xl sm:text-4xl font-black text-white">GET IN <span class="text-cyber-cyan">TOUCH</span></h3>
+                    <p class="text-gray-400 font-sans text-sm mt-2">Feel free to reach out for gaming tournament collaborations, website projects, or academic discussions.</p>
+                    <div class="w-20 h-1 bg-gradient-to-r from-cyber-cyan to-cyber-purple mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto">
+                    
+                    <!-- Direct Contact Cards Column -->
+                    <div class="lg:col-span-5 space-y-4">
+                        
+                        <!-- Email Card -->
+                        <div class="cyber-card p-5 rounded-2xl border border-cyber-border hover:border-cyber-cyan transition-all flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan/40 flex items-center justify-center text-cyber-cyan text-xl">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <div class="font-tech text-xs text-gray-400 uppercase">OFFICIAL EMAIL</div>
+                                    <a href="mailto:luckyverma76@gmail.com" class="font-display font-bold text-white hover:text-cyber-cyan text-sm sm:text-base transition-colors">
+                                        luckyverma76@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                            <button onclick="copyContactInfo('luckyverma76@gmail.com', 'Email Address')" title="Copy Email" class="p-2.5 rounded-lg bg-cyber-black text-gray-400 hover:text-cyber-cyan hover:bg-cyber-card transition-all">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <!-- Contact Phone Card -->
+                        <div class="cyber-card p-5 rounded-2xl border border-cyber-border hover:border-cyber-purple transition-all flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-cyber-purple/10 border border-cyber-purple/40 flex items-center justify-center text-cyber-purple text-xl">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <div class="font-tech text-xs text-gray-400 uppercase">MOBILE PHONE</div>
+                                    <a href="tel:+919131324500" class="font-display font-bold text-white hover:text-cyber-purple text-sm sm:text-base transition-colors">
+                                        +91 9131324500
+                                    </a>
+                                </div>
+                            </div>
+                            <button onclick="copyContactInfo('+919131324500', 'Phone Number')" title="Copy Phone" class="p-2.5 rounded-lg bg-cyber-black text-gray-400 hover:text-cyber-purple hover:bg-cyber-card transition-all">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <!-- Direct Call CTA -->
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <a href="mailto:luckyverma76@gmail.com" class="cyber-button py-3 text-center bg-cyber-cyan/10 border border-cyber-cyan/60 text-cyber-cyan font-tech font-bold text-sm uppercase hover:bg-cyber-cyan hover:text-black transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Email Now
+                            </a>
+                            <a href="tel:+919131324500" class="cyber-button py-3 text-center bg-cyber-purple/10 border border-cyber-purple/60 text-cyber-purple font-tech font-bold text-sm uppercase hover:bg-cyber-purple hover:text-white transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-phone"></i> Direct Call
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- Interactive Form Column -->
+                    <div class="lg:col-span-7">
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="cyber-card p-6 sm:p-8 rounded-2xl border border-cyber-border space-y-4">
+                            <h4 class="font-display font-bold text-xl text-white mb-2">Transmission Message</h4>
+                            
+                            <div>
+                                <label class="block font-tech text-xs text-gray-300 uppercase mb-1">Your Name</label>
+                                <input type="text" required placeholder="e.g. Alex Hunter" class="w-full px-4 py-3 bg-cyber-black rounded-lg border border-cyber-border text-white placeholder-gray-500 focus:outline-none focus:border-cyber-cyan text-sm transition-colors">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-tech text-xs text-gray-300 uppercase mb-1">Email Address</label>
+                                    <input type="email" required placeholder="alex@domain.com" class="w-full px-4 py-3 bg-cyber-black rounded-lg border border-cyber-border text-white placeholder-gray-500 focus:outline-none focus:border-cyber-cyan text-sm transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block font-tech text-xs text-gray-300 uppercase mb-1">Subject</label>
+                                    <input type="text" required placeholder="Gaming / BCA Inquiry" class="w-full px-4 py-3 bg-cyber-black rounded-lg border border-cyber-border text-white placeholder-gray-500 focus:outline-none focus:border-cyber-cyan text-sm transition-colors">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-tech text-xs text-gray-300 uppercase mb-1">Message Content</label>
+                                <textarea rows="4" required placeholder="Write your message here..." class="w-full px-4 py-3 bg-cyber-black rounded-lg border border-cyber-border text-white placeholder-gray-500 focus:outline-none focus:border-cyber-cyan text-sm transition-colors resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full cyber-button py-3.5 bg-gradient-to-r from-cyber-cyan to-cyber-purple text-black font-display font-bold text-sm tracking-wider uppercase hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Transmit Message
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Project Details Interactive Modal -->
+    <div id="projectModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="cyber-card w-full max-w-3xl rounded-2xl border-2 border-cyber-cyan p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            
+            <!-- Close Button -->
+            <button onclick="closeProjectModal()" class="absolute top-4 right-4 w-9 h-9 rounded-lg bg-cyber-black border border-cyber-border text-gray-400 hover:text-cyber-cyan hover:border-cyber-cyan flex items-center justify-center text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Content -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-cyber-cyan animate-ping"></span>
+                    <span class="font-tech text-xs text-cyber-cyan uppercase tracking-widest font-bold">PROJECT OVERVIEW</span>
+                </div>
+
+                <h3 class="font-display font-black text-3xl text-white">Esports Webpage Architecture</h3>
+
+                <!-- Mockup Graphic inside Modal -->
+                <div class="p-6 bg-cyber-black rounded-xl border border-cyber-border text-center">
+                    <i class="fa-solid fa-trophy text-5xl text-cyber-cyan mb-3"></i>
+                    <h4 class="font-display font-bold text-lg text-white">Interactive Esports Platform Preview</h4>
+                    <p class="text-xs text-gray-400 max-w-md mx-auto mt-2">
+                        Designed specifically for gamer matchmaking, squad tournaments, live standings, and team registration management.
+                    </p>
+                </div>
+
+                <!-- Modal Detailed Bullet Points -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-tech text-sm">
+                    <div class="p-4 bg-cyber-black/60 rounded-lg border border-cyber-border">
+                        <div class="text-cyber-cyan font-bold mb-1">🎮 Dynamic Bracket UI</div>
+                        <div class="text-xs text-gray-300">Organized single & double elimination tournament visual brackets.</div>
+                    </div>
+                    <div class="p-4 bg-cyber-black/60 rounded-lg border border-cyber-border">
+                        <div class="text-cyber-purple font-bold">⚡ Responsive Layout</div>
+                        <div class="text-xs text-gray-300">Fluid grid design optimized for smartphones, tablets, and desktop displays.</div>
+                    </div>
+                    <div class="p-4 bg-cyber-black/60 rounded-lg border border-cyber-border">
+                        <div class="text-cyber-pink font-bold">🏆 Roster Management</div>
+                        <div class="text-xs text-gray-300">Interactive squad submission forms with player game ID fields.</div>
+                    </div>
+                    <div class="p-4 bg-cyber-black/60 rounded-lg border border-cyber-border">
+                        <div class="text-cyber-accent font-bold">📡 Stream Integration</div>
+                        <div class="text-xs text-gray-300">Embedded Twitch/YouTube live broadcast section mockup.</div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-cyber-border flex justify-end gap-3">
+                    <button onclick="closeProjectModal()" class="px-6 py-2.5 bg-cyber-black border border-cyber-border text-gray-300 rounded font-tech font-bold text-sm hover:text-white">
+                        Close Specs
+                    </button>
+                    <button onclick="showToast('Esports Webpage Live Demo initialized!')" class="px-6 py-2.5 bg-cyber-cyan text-black font-tech font-bold text-sm rounded hover:bg-white transition-colors">
+                        Launch Live Sandbox
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification Message Container -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="cyber-card px-5 py-3.5 rounded-xl border border-cyber-cyan text-white shadow-neon-cyan flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-cyber-cyan text-lg" id="toastIcon"></i>
+            <span id="toastMessage" class="font-tech font-bold text-sm tracking-wide text-gray-200"></span>
+        </div>
+    </div>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-cyber-black border-t border-cyber-border/80 py-10 px-4 sm:px-6 lg:px-8 z-10 relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <!-- Footer Branding -->
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-cyber-cyan to-cyber-purple flex items-center justify-center font-display font-black text-black text-sm">
+                    GV
+                </div>
+                <span class="font-display font-bold text-sm text-white">
+                    GORANG VERMA <span class="text-cyber-cyan">| BCA ADVANCED</span>
+                </span>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="flex flex-wrap items-center justify-center gap-6 font-tech text-xs tracking-wider uppercase text-gray-400">
+                <a href="#home" class="hover:text-cyber-cyan transition-colors">Home</a>
+                <a href="#about" class="hover:text-cyber-cyan transition-colors">About</a>
+                <a href="#skills" class="hover:text-cyber-cyan transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-cyber-cyan transition-colors">Projects</a>
+                <a href="#contact" class="hover:text-cyber-cyan transition-colors">Contact</a>
+            </div>
+
+            <!-- Copyright -->
+            <div class="font-tech text-xs text-gray-500 text-center md:text-right">
+                © 2026 Gorang Verma. All rights reserved. Designed with Neon Esports Theme.
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- JavaScript Functionality -->
+    <script>
+        // Typing Effect Words array
+        const typingWords = ["Web Development", "Esports Tournaments", "Gaming Tactics", "UI/UX Front-End"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingTextElement = document.getElementById("typingText");
+
+        function typeEffect() {
+            const currentWord = typingWords[wordIndex];
+            
+            if (isDeleting) {
+                typingTextElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingTextElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 60 : 120;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 1800; // Pause at end of word
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % typingWords.length;
+                typeSpeed = 400;
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+
+        // Interactive Canvas Matrix & Particle Network
+        const canvas = document.getElementById("bgCanvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.speedY = (Math.random() - 0.5) * 0.8;
+                this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, ' : 'rgba(176, 38, 255, ';
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color + this.alpha + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(Math.floor(window.innerWidth / 15), 70);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Connect nearby particles
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+
+        // Copy to clipboard fallback handler
+        function copyContactInfo(text, label) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Fallback copy failed', err);
+                }
+                document.body.removeChild(textArea);
+            }
+            playBeepSound();
+            showToast(`${label} copied to clipboard!`);
+        }
+
+        // Show Custom Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            const toastMsg = document.getElementById("toastMessage");
+            toastMsg.textContent = message;
+            
+            toast.classList.remove("translate-y-24", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-24", "opacity-0");
+            }, 3000);
+        }
+
+        // Form Submit Handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            playBeepSound();
+            showToast("Message transmitted successfully to Gorang Verma!");
+            event.target.reset();
+        }
+
+        // Modal Controllers
+        function openProjectModal() {
+            document.getElementById("projectModal").classList.remove("hidden");
+            playBeepSound();
+        }
+
+        function closeProjectModal() {
+            document.getElementById("projectModal").classList.add("hidden");
+        }
+
+        // Optional Synthesized Web Audio API sound effect for cyber theme feedback
+        let audioCtx = null;
+        let soundMuted = false;
+
+        function playBeepSound() {
+            if (soundMuted) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {
+                // Ignore audio context autoplay restrictions
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            // Start Typing Effect
+            typeEffect();
+
+            // Init Particle Canvas
+            resizeCanvas();
+            animateCanvas();
+            window.addEventListener("resize", resizeCanvas);
+
+            // Mobile Navigation Toggle
+            const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+            const mobileMenu = document.getElementById("mobileMenu");
+            const menuIcon = document.getElementById("menuIcon");
+
+            mobileMenuBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+                if (mobileMenu.classList.contains("hidden")) {
+                    menuIcon.className = "fa-solid fa-bars";
+                } else {
+                    menuIcon.className = "fa-solid fa-xmark";
+                }
+            });
+
+            // Close mobile menu when clicking nav link
+            document.querySelectorAll(".mobile-nav-link").forEach(link => {
+                link.addEventListener("click", () => {
+                    mobileMenu.classList.add("hidden");
+                    menuIcon.className = "fa-solid fa-bars";
+                });
+            });
+
+            // Sound Toggle Handler
+            const soundToggle = document.getElementById("soundToggle");
+            const soundIcon = document.getElementById("soundIcon");
+
+            soundToggle.addEventListener("click", () => {
+                soundMuted = !soundMuted;
+                if (soundMuted) {
+                    soundIcon.className = "fa-solid fa-volume-xmark";
+                    showToast("Audio SFX Muted");
+                } else {
+                    soundIcon.className = "fa-solid fa-volume-high";
+                    playBeepSound();
+                    showToast("Audio SFX Unmuted");
+                }
+            });
+
+            // Highlight Active Scroll Section
+            const sections = document.querySelectorAll("section");
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            window.addEventListener("scroll", () => {
+                let current = "";
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 120) {
+                        current = section.getAttribute("id");
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove("text-cyber-cyan", "bg-cyber-card");
+                    if (link.getAttribute("href") === `#${current}`) {
+                        link.classList.add("text-cyber-cyan", "bg-cyber-card");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
